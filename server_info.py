@@ -56,7 +56,7 @@ def search_server(param):
                 except:
                     continue
             print(title)
-            wf.add_item(title=title, subtitle='server info', arg=server['pub_ip'], valid=True)
+            wf.add_item(title=server['pub_ip'], subtitle=title, arg=server['pub_ip'], valid=True)
         except:
             pass
         wf.send_feedback()
