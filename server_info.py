@@ -21,7 +21,7 @@ def load_servers():
 
 
 def search_server(param):
-    sys.stderr.write('seach param: %s' % param)
+    sys.stderr.write('seach param: %s\n' % param)
     server_list = load_servers()
 
     idc = ''
@@ -42,21 +42,19 @@ def search_server(param):
     for server in server_list:
         if ip in server['detail_ip'] and idc in server['idc']:
             find_items.append(server)
-            if len(find_items) >= 5:
-                break
 
     wf = workflow.Workflow()
     for server in find_items:
+        title = server['idc'] + ' ' + server['pub_ip']
+        for k, v in server.items():
+            try:
+                if int(v) == 1:
+                    title += ' ' + k
+            except:
+                continue
+
         try:
-            title = server['idc'] + ' ' + server['pub_ip']
-            for k, v in server.items():
-                try:
-                    if int(v) == 1:
-                        title += ' ' + k
-                except:
-                    continue
-            print(title)
             wf.add_item(title=server['pub_ip'], subtitle=title, arg=server['pub_ip'], valid=True)
         except:
-            pass
-        wf.send_feedback()
+            continue
+    wf.send_feedback()
