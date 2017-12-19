@@ -3,8 +3,10 @@ import socket
 import workflow
 
 
-def ip2int(value):
-    return str(socket.ntohl(struct.unpack("I", socket.inet_aton(str(value)))[0]))
+def ip2int(value, htonl=True):
+    if htonl:
+        return str(socket.ntohl(struct.unpack("I", socket.inet_aton(str(value)))[0]))
+    return str(struct.unpack("I", socket.inet_aton(str(value)))[0])
 
 
 def int2ip(value, htonl=True):
@@ -23,14 +25,20 @@ def query(param):
         pass
 
     try:
-        wf.add_item(title=int2ip(int(param)), subtitle='int2ip',
-                    arg=int2ip(int(param)), valid=True)
+        ip = int2ip(int(param))
+        wf.add_item(title=ip, subtitle='int2ip', arg=ip, valid=True)
     except:
         pass
 
     try:
-        wf.add_item(title=ip2int(param), subtitle='ip2int',
-                    arg=ip2int(param), valid=True)
+        int_ip = ip2int(param, False)
+        wf.add_item(title=int_ip, subtitle='ip2int', arg=int_ip, valid=True)
+    except:
+        pass
+
+    try:
+        int_ip = ip2int(param)
+        wf.add_item(title=int_ip, subtitle='ip2int', arg=int_ip, valid=True)
     except:
         pass
 
