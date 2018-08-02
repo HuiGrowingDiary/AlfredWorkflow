@@ -1,12 +1,11 @@
 import time
 import workflow
+from datetime import datetime
 
 
 def timestamp_datetime(value):
     date_format = '%Y-%m-%d %H:%M:%S'
-    value = time.localtime(value)
-    dt = time.strftime(date_format, value)
-    return dt
+    return datetime.utcfromtimestamp(value).strftime(date_format)
 
 
 def datetime_timestamp(dt):
